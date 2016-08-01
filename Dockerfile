@@ -1,7 +1,7 @@
 # OS
 FROM ubuntu:latest
 
-MAINTAINER NotFounds
+MAINTAINER XEEJP
 
 # Environment
 # Set the locale(en_US.UTF-8)
@@ -13,7 +13,7 @@ ENV LC_ALL en_US.UTF-8
 # Set app env
 ENV HOME /root
 
-RUN apt-get update && apt-get upgrade -y && apt-get install -y openssl wget git make inotify-tools
+RUN apt-get update && apt-get upgrade -y && apt-get install -y openssl wget git make inotify-tools vim
 RUN apt-get install -y software-properties-common python-software-properties
 RUN apt-get install -y ruby
 RUN apt-get install -y python
@@ -35,10 +35,10 @@ RUN apt-get install -y nodejs npm nodejs-legacy
 # install erlang
 RUN apt-get install -y erlang
 
-RUN mix local.hex
 RUN git clone https://github.com/xeejp/xee.git
-RUN cd ./xee/
+WORKDIR ./xee
+RUN yes | mix deps.get
+RUN mix deps.clean --all
+RUN yes | mix deps.update --all
+RUN yes | mix deps.update phoenix_html
 RUN npm install
-
-EXPOSE 4000
-
